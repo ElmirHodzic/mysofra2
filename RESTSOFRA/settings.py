@@ -119,7 +119,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-LOCALE_PATHS = (PROJECT_DIR.child('locale'), )
+LOCALE_PATHS = (BASE_DIR.child('locale'), )
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
