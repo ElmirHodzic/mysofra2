@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 from unipath import Path
+import dj_database_url
 
 BASE_DIR = Path(__file__).parent
 
@@ -87,6 +88,8 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+DATABASES['default'] =  dj_database_url.config();
 
 
 # Password validation
