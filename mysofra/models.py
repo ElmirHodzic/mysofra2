@@ -11,8 +11,8 @@ class mysofraMail(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     subject = models.CharField(max_length=100, blank=True, default='')
     message = models.TextField()
-    mail_from = models.CharField(default='orders@mysofra.at', max_length=100)
-    mail_to = models.CharField(default='checkouts@mysofra.at', max_length=100)
+    mail_from = models.CharField(default='checkouts@mysofra.at', max_length=100)
+    mail_to = models.CharField(default='orders@mysofra.at', max_length=100)
 
     class Meta:
         ordering = ('created',)
