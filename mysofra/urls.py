@@ -5,6 +5,8 @@ from mysofra import views
 urlpatterns = [
     url(r'^products/$', views.ProductList.as_view()),
     url(r'^products/(?P<pk>[0-9]+)/$', views.ProductDetail.as_view()),
+    url(r'^mails/$', views.MailList.as_view()),
+    url(r'^mails/(?P<pk>[0-9]+)/$', views.MailDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

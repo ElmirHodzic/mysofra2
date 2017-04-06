@@ -141,3 +141,9 @@ STATICFILES_DIRS = (
 )
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+EMAIL_HOST = 'mail.akern.at'
+EMAIL_HOST_USER = 'checkouts@mysofra.at'
+EMAIL_HOST_PASSWORD = 'Mysofra!at'
+EMAIL_PORT = 587
+#EMAIL_USE_TLS = True

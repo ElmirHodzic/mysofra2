@@ -6,3 +6,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('id', 'name', 'price', 'image_path', 'description')
 
+class MailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = mysofraMail
+        fields = ('id', 'subject', 'message', 'mail_from', 'mail_to', 'created')
