@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from mysofra.models import Product
+from mysofra.models import Product, mysofraMail
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
