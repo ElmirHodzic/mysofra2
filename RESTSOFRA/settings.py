@@ -28,7 +28,7 @@ SECRET_KEY = '=dw%g1#x%c(vt+5*!&i%ngt(9y#3uo(0^!q&$m=x^0pwi4-zum'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['mysofra-api.herokuapp.com']
 
 
 # Application definition
