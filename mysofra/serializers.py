@@ -10,3 +10,8 @@ class MailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mail
         fields = ('id', 'subject', 'message', 'mail_from', 'mail_to', 'created')
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name')
