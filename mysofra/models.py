@@ -1,13 +1,17 @@
 from django.db import models
 
-PRODUCT_CHOICES = [("1","Huhnerfleisch"), ("2","Rindfleisch")];
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return str(self.name);
 
 class Product(models.Model):
     name = models.CharField(max_length=100, blank=True, default='')
     price = models.DecimalField(max_digits=5, decimal_places=2)
     image_path = models.CharField(max_length=100, blank=True, default='sirloin.png')
     description = models.CharField(max_length=2000, blank=True, default='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eget mollis urna, imperdiet malesuada eros. Nunc eget mollis urna, imperdiet malesuada eros.')
-    category = models.CharField(choices=PRODUCT_CHOICES, max_length=100)
+    category = models.ForeignKey(Category)
 
     def __str__(self):
         return str(self.name);
