@@ -4,7 +4,7 @@ from mysofra.models import Product, Mail, Category
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'name', 'price', 'image_path', 'description')
+        fields = ('id', 'name', 'price', 'image_path', 'description', 'category')
 
 class MailSerializer(serializers.ModelSerializer):
     class Meta:
