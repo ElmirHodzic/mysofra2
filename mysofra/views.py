@@ -1,5 +1,5 @@
-from mysofra.models import Product, Mail
-from mysofra.serializers import ProductSerializer, MailSerializer
+from mysofra.models import Product, Mail, Category
+from mysofra.serializers import ProductSerializer, MailSerializer, CategorySerializer
 from rest_framework import generics
 from django.http import Http404
 from rest_framework.views import APIView
@@ -20,6 +20,7 @@ TRANSACTION_SUCCESS_STATUSES = [
     braintree.Transaction.Status.SubmittedForSettlement
 ]
 
+
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -29,6 +30,13 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
+class CategoryList(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 class MailList(APIView):
     """
