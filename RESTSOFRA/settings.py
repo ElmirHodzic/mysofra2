@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 from unipath import Path
+from braintree import Configuration, Environment
 import dj_database_url
 
 BASE_DIR = Path(__file__).parent
@@ -29,12 +30,13 @@ SECRET_KEY = '=dw%g1#x%c(vt+5*!&i%ngt(9y#3uo(0^!q&$m=x^0pwi4-zum'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysofra-api.herokuapp.com']
+ALLOWED_HOSTS = ['mysofra-api.herokuapp.com', 'localhost']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'material.admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +46,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'mysofra.apps.MysofraConfig',
     'corsheaders',
+    'material',
+    'material.frontend',
 ]
 
 MIDDLEWARE = [
@@ -92,7 +96,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] =  dj_database_url.config();
+#DATABASES['default'] =  dj_database_url.config();
 
 
 # Password validation
@@ -132,13 +136,11 @@ LOCALE_PATHS = (BASE_DIR.child('locale'), )
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-STATIC_ROOT = BASE_DIR.parent.child('staticfiles')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (BASE_DIR.child('static'),)
+STATIC_ROOT = BASE_DIR.parent.child('static')
 
-STATICFILES_DIRS = (
-    BASE_DIR.child('static'),
-)
+
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -147,3 +149,16 @@ EMAIL_HOST_USER = 'checkouts@mysofra.at'
 EMAIL_HOST_PASSWORD = 'Mysofra!at'
 EMAIL_PORT = 587
 #EMAIL_USE_TLS = True
+
+BRAINTREE_MERCHANT = 'hh9p27zgwxtcvwsh'
+BRAINTREE_PUBLIC_KEY = '93ywc7962chnqfwc'
+BRAINTREE_PRIVATE_KEY = 'ec974035803b158b59380ddd94c9ab8f'
+
+
+Configuration.configure(
+    Environment.Sandbox,
+    BRAINTREE_MERCHANT,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY
+)
+

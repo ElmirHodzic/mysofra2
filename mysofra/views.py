@@ -1,4 +1,4 @@
-from mysofra.models import Product, mysofraMail
+from mysofra.models import Product, Mail
 from mysofra.serializers import ProductSerializer, MailSerializer
 from rest_framework import generics
 from django.http import Http404
@@ -6,6 +6,19 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.core.mail import send_mail
+from django.shortcuts import render, redirect
+import braintree
+from django.contrib import messages
+
+TRANSACTION_SUCCESS_STATUSES = [
+    braintree.Transaction.Status.Authorized,
+    braintree.Transaction.Status.Authorizing,
+    braintree.Transaction.Status.Settled,
+    braintree.Transaction.Status.SettlementConfirmed,
+    braintree.Transaction.Status.SettlementPending,
+    braintree.Transaction.Status.Settling,
+    braintree.Transaction.Status.SubmittedForSettlement
+]
 
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -62,3 +75,48 @@ class MailDetail(APIView):
     def delete(self, request, pk, format=None):
         mail = self.get_object(pk)
         mail.delete()
+
+def new_checkout(request):
+    if request.method == 'POST':
+        client_token = braintree.ClientToken.generate()
+        amount = request.POST.get('amount')
+        return render(request, 'checkouts/new.html', {'client_token':client_token,'amount':amount})
+    else:
+        client_token = braintree.ClientToken.generate()
+        amount = 13.30
+        return render(request, 'checkouts/new.html', {'client_token':client_token,'amount':amount})
+
+def show_checkout(request, transaction_id):
+    transaction = braintree.Transaction.find(transaction_id)
+    result = {}
+    
+    if transaction.status in TRANSACTION_SUCCESS_STATUSES:
+        result = {
+            'header': 'Sweet Success!',
+            'icon': 'success',
+            'message': 'Your test transaction has been successfully processed. See the Braintree API response and try again.'
+        }
+    else:
+        result = {
+            'header': 'Transaction Failed',
+            'icon': 'fail',
+            'message': 'Your test transaction has a status of ' + transaction.status + '. See the Braintree API response and try again.'
+        }
+
+    return render(request, 'checkouts/show.html', {'result_set':result, 'transaction':transaction})
+
+def create_checkout(request):
+    if request.method == 'POST':
+
+        result = braintree.Transaction.sale({
+            'amount': request.POST.get('amount'),
+            'payment_method_nonce': request.POST.get('payment_method_nonce'),
+            'options': {
+                "submit_for_settlement": True
+            }
+        })
+        if result.is_success or result.transaction:
+            return redirect('/checkouts/'+result.transaction.id +'/',transaction_id=result.transaction.id)
+        else:
+            for x in result.errors.deep_errors: messages.error(request, 'Error: %s: %s' % (x.code, x.message))
+            return redirect('/checkouts/new/')

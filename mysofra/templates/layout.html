@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BraintreeFlaskExample</title>
+  {% load static %}
+  <link rel="stylesheet" link href="{% static 'css/app.css' %}"/>
+  <link rel=stylesheet type=text/css href="{% static 'css/overrides.css' %}">
+  <script src="{% static 'javascript/vendor/jquery-2.1.4.min.js' %}"></script>
+  <script src="{% static 'javascript/vendor/jquery.lettering-0.6.1.min.js' %}"></script>
+  <script src="{% static 'javascript/demo.js' %}"></script>
+</head>
+<body>
+  <header class="main">
+    <div class="container wide">
+      <div class="content slim">
+        <div class="set">
+          <div class="fill">
+            <a class="pseudoshop" href="/">PSEUDO<strong>SHOP</strong></a>
+            {{ client_token }}
+          </div>
+
+          <div class="fit">
+            <a class="braintree" href="https://developers.braintreepayments.com/guides/drop-in" target="_blank">Braintree</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div class="notice-wrapper">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="show notice error notice-error">
+            <span class="notice-message">{{ message.message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+</body>
+</html>
