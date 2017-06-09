@@ -43,7 +43,7 @@ class MailList(APIView):
     List all mails, or create a new mail.
     """
     def get(self, request, format=None):
-        mails = mysofraMail.objects.all()
+        mails = Mail.objects.all()
         serializer = MailSerializer(mails, many=True)
         return Response(serializer.data)
 
@@ -63,7 +63,7 @@ class MailDetail(APIView):
     """
     def get_object(self, pk):
         try:
-            return mysofraMail.objects.get(pk=pk)
+            return Mail.objects.get(pk=pk)
         except mysofraMail.DoesNotExist:
             raise Http404
 
