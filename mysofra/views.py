@@ -124,8 +124,8 @@ def new_checkout(request):
         return render(request, 'checkouts/new.html', {'client_token':client_token,'amount':amount})
     else:
         client_token = braintree.ClientToken.generate()
-        amount = 13.30
-        return render(request, 'checkouts/new.html', {'client_token':client_token,'amount':amount})
+        m = Mail.objects.get(pk=pk)
+        return render(request, 'checkouts/new.html', {'client_token':client_token,'amount':m.amount})
 
 def show_checkout(request, transaction_id):
     transaction = braintree.Transaction.find(transaction_id)
