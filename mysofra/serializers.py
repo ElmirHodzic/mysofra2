@@ -9,7 +9,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class MailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mail
-        fields = ('id', 'subject', 'message', 'mail_from', 'mail_to', 'created')
+        fields = ('id', 'subject', 'message', 'mail_from', 'mail_to', 'created', 'amount')
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
