@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^categories/(?P<pk>[0-9]+)/$', views.CategoryDetail.as_view()),
     url(r'^mails/$', views.MailList.as_view()),
     url(r'^mails/(?P<pk>[0-9]+)/$', views.MailDetail.as_view()),
-    url(r'^checkouts/new/$', views.new_checkout),
+    url(r'^checkouts/new/(?P<pk>[0-9]+)/$', views.new_checkout),
     url(r'^checkouts/(?P<transaction_id>[a-z0-9]+)/$', views.show_checkout),
     url(r'^checkouts/$', views.create_checkout),
 ]
