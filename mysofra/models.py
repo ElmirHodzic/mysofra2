@@ -32,7 +32,7 @@ class Mail(models.Model):
     mail_to = models.CharField(default='order@mysofra.at', max_length=100)
     
     def __unicode__(self):
-        return u' %s ' % self.name
+        return u' %s ' % self.subject
 
     #def __str__(self):
      #   return str(self.subject).encode('ascii', errors='replace');
