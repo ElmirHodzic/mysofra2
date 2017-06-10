@@ -144,9 +144,9 @@ STATIC_ROOT = BASE_DIR.parent.child('static')
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-EMAIL_HOST = 'mail.akern.at'
-EMAIL_HOST_USER = 'checkouts@mysofra.at'
-EMAIL_HOST_PASSWORD = 'Mysofra!at'
+EMAIL_HOST = 'w016f02c.kasserver.com'
+EMAIL_HOST_USER = 'checkout@mysofra.at'
+EMAIL_HOST_PASSWORD = 'akern_at123'
 EMAIL_PORT = 587
 #EMAIL_USE_TLS = True
 
