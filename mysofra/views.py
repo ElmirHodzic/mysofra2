@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from mysofra.models import Product, Mail, Category
 from mysofra.serializers import ProductSerializer, MailSerializer, CategorySerializer
 from rest_framework import generics
@@ -9,6 +10,8 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 import braintree
 from django.contrib import messages
+import json
+from datetime import datetime
 
 TRANSACTION_SUCCESS_STATUSES = [
     braintree.Transaction.Status.Authorized,
@@ -21,6 +24,14 @@ TRANSACTION_SUCCESS_STATUSES = [
 ]
 
 
+class CategoryList(generics.ListCreateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
 class ProductList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
@@ -30,13 +41,33 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-class CategoryList(generics.ListCreateAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    
+def make_mail(dic):
+    mail =  'You have a new online order from,\n\n'
+    mail += 'Name:      {0} {1}\n'.format(dic['name'], dic['lname']);
+    mail += 'Address:   {0}\n'.format(dic['address'])
+    mail += 'Email:     {0}\n'.format(dic['email'])
+    mail += 'Telephone: {0}\n'.format(dic['number'])
+    mail += 'Payment:   {0}\n\n\n'.format('DEFINE')
+    mail += '{:->56}'.format('\n')
+    mail += '|Nr.  |    Product name    |    Price    |  Quantity  |\n'
+    mail += '{:->56}'.format('\n')
 
-class CategoryDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    for x in xrange(len(dic['products'])):
+        p = Product.objects.get(pk=dic['products'][x])
+        mail += '|{:>5}|    {:>12}    |    {:>7}  |  {:>8}  |\n'.format(x, p.name, p.price, dic['quantities'][x])
+        mail += '{:->56}'.format('\n')
+    
+    mail += '| AMOUNT {:>45}|\n'.format(dic['amount'])
+    mail += '{:->56}'.format('\n\n')
+    mail += '{:%d.%m.%Y %H:%M}\n'.format(datetime.now())
+    mail += 'mysofra.at team'
+
+    return mail;
+
+def mail_to_consumer(dic):
+    mail = 'Sehr geehrte(r) {0} \nwir freuen uns Ihnen mitteilen zu können, dass wir Ihre \nbestellte Ware heute zum Versand gebracht haben. \n\nMit dieser E-Mail bestätigen wir die Annahme des Vertrages. \n\nDie Ware wird in den nächsten 1-2 Werktagen bei Ihnen angeliefert.\nSollten Sie mit Nachnahme bezahlen, halten Sie bitte den Nachnahme-Betrag \nvon EURO {1} in bar bereit.\n\n\nWir möchten uns noch einmal für Ihre Bestellung bedanken! \n\nmit freundlichen Grüssen\n\nIhr mysofra.at Team!'.format(dic['name'] + ' ' + dic['lname'], dic['amount'])
+    return mail;
 
 class MailList(APIView):
     """
@@ -50,9 +81,11 @@ class MailList(APIView):
     def post(self, request, format=None):
         serializer = MailSerializer(data=request.data)
         if serializer.is_valid():
-            mail_from = 'checkouts@mysofra.at'#request.data['mail_from'] if 'mail_from' in request.data else 
-            mail_to = request.data['mail_to'] if 'mail_to' in request.data else 'orders@mysofra.at'
-            send_mail(request.data['subject'], request.data['message'], mail_from, [mail_to])            
+            mail_from = 'checkout@mysofra.at'#request.data['mail_from'] if 'mail_from' in request.data else 
+            mail_to = request.data['mail_to'] if 'mail_to' in request.data else 'order@mysofra.at'
+            dic = json.loads(request.data['message']);
+            send_mail(request.data['subject'], make_mail(dic), mail_from, [mail_to])
+            send_mail('Your order is ready', mail_to_consumer(dic), mail_from, [dic['email']])            
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -64,7 +97,7 @@ class MailDetail(APIView):
     def get_object(self, pk):
         try:
             return Mail.objects.get(pk=pk)
-        except mysofraMail.DoesNotExist:
+        except Mail.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
