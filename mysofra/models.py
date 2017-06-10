@@ -30,6 +30,7 @@ class Mail(models.Model):
     message = models.TextField()
     mail_from = models.CharField(default='checkout@mysofra.at', max_length=100)
     mail_to = models.CharField(default='order@mysofra.at', max_length=100)
+    amount = models.DecimalField(max_digits=5, decimal_places=2)
     
     def __unicode__(self):
         return u' %s ' % self.subject
