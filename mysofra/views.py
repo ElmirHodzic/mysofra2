@@ -55,7 +55,7 @@ def make_mail(dic):
 
     for x in xrange(len(dic['products'])):
         p = Product.objects.get(pk=dic['products'][x])
-        mail += u'|{:>5}|    {:>12}    |    {:>7}  |  {:>8}  |\n'.format(x, p.name, p.price, dic['quantities'][x])
+        mail += u'|{:>5}|  {:>16}  |    {:>7}  |  {:>8}  |\n'.format(x, p.name, p.price, dic['quantities'][x])
         mail += '{:->56}'.format('\n')
     
     mail += '| AMOUNT {:>45}|\n'.format(dic['amount'])
