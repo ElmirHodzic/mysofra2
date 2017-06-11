@@ -81,7 +81,7 @@ class MailList(APIView):
     def post(self, request, format=None):
         serializer = MailSerializer(data=request.data)
         if serializer.is_valid():
-            mail_from = 'checkout@mysofra.at'#request.data['mail_from'] if 'mail_from' in request.data else 
+            mail_from = 'delivery@mysofra.at'#request.data['mail_from'] if 'mail_from' in request.data else 
             mail_to = request.data['mail_to'] if 'mail_to' in request.data else 'order@mysofra.at'
             dic = json.loads(request.data['message']);
             send_mail(request.data['subject'], make_mail(dic), mail_from, [mail_to])
