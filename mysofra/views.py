@@ -117,7 +117,7 @@ class MailDetail(APIView):
         mail = self.get_object(pk)
         mail.delete()
 
-def new_checkout(request):
+def new_checkout(request, pk):
     if request.method == 'POST':
         client_token = braintree.ClientToken.generate()
         amount = request.POST.get('amount')
