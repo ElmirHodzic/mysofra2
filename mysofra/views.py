@@ -48,7 +48,7 @@ def make_mail(dic):
     mail += 'Address:   {0}\n'.format(dic['address'])
     mail += 'Email:     {0}\n'.format(dic['email'])
     mail += 'Telephone: {0}\n'.format(dic['number'])
-    mail += 'Payment:   {0}\n\n\n'.format('DEFINE')
+    mail += 'Payment:   {0}\n\n\n'.format(dic['payment'])
     mail += '{:->56}'.format('\n')
     mail += '|Nr.  |    Product name    |    Price    |  Quantity  |\n'
     mail += '{:->56}'.format('\n')
