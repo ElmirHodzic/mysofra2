@@ -84,8 +84,8 @@ class MailList(APIView):
             mail_from = 'delivery@mysofra.at'#request.data['mail_from'] if 'mail_from' in request.data else 
             mail_to = request.data['mail_to'] if 'mail_to' in request.data else 'order@mysofra.at'
             dic = json.loads(request.data['message']);
-            send_mail(request.data['subject'], html_message = make_mail(dic), mail_from, [mail_to])
-            send_mail('Your order is ready', html_message = mail_to_consumer(dic), mail_from, [dic['email']])            
+            send_mail(request.data['subject'],make_mail(dic), mail_from, [mail_to], html_message = make_mail(dic))
+            send_mail('Your order is ready', mail_to_consumer(dic), mail_from, [dic['email']], html_message = make_mail(dic))            
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
