@@ -43,7 +43,7 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 
     
 def make_mail(dic):
-    mail =  'You have a new online order from,\n\n'
+    mail =  '<h3>You have a new online order from,</h3>\n\n'
     mail += 'Name:      {0} {1}\n'.format(dic['name'], dic['lname']);
     mail += 'Address:   {0}\n'.format(dic['address'])
     mail += 'Email:     {0}\n'.format(dic['email'])
@@ -66,7 +66,7 @@ def make_mail(dic):
     return mail;
 
 def mail_to_consumer(dic):
-    mail = 'Sehr geehrte(r) {0} \nwir freuen uns Ihnen mitteilen zu können, dass wir Ihre \nbestellte Ware heute zum Versand gebracht haben. \n\nMit dieser E-Mail bestätigen wir die Annahme des Vertrages. \n\nDie Ware wird in den nächsten 1-2 Werktagen bei Ihnen angeliefert.\nSollten Sie mit Nachnahme bezahlen, halten Sie bitte den Nachnahme-Betrag \nvon EURO {1} in bar bereit.\n\n\nWir möchten uns noch einmal für Ihre Bestellung bedanken! \n\nmit freundlichen Grüssen\n\nIhr mysofra.at Team!'.format(dic['name'] + ' ' + dic['lname'], dic['amount'])
+    mail = '<h3>Sehr geehrte(r) {0} </h3> \nwir freuen uns Ihnen mitteilen zu können, dass wir Ihre \nbestellte Ware heute zum Versand gebracht haben. \n\nMit dieser E-Mail bestätigen wir die Annahme des Vertrages. \n\nDie Ware wird in den nächsten 1-2 Werktagen bei Ihnen angeliefert.\nSollten Sie mit Nachnahme bezahlen, halten Sie bitte den Nachnahme-Betrag \nvon EURO {1} in bar bereit.\n\n\nWir möchten uns noch einmal für Ihre Bestellung bedanken! \n\nmit freundlichen Grüssen\n\nIhr mysofra.at Team!'.format(dic['name'] + ' ' + dic['lname'], dic['amount'])
     return mail;
 
 class MailList(APIView):
@@ -84,8 +84,8 @@ class MailList(APIView):
             mail_from = 'delivery@mysofra.at'#request.data['mail_from'] if 'mail_from' in request.data else 
             mail_to = request.data['mail_to'] if 'mail_to' in request.data else 'order@mysofra.at'
             dic = json.loads(request.data['message']);
-            send_mail(request.data['subject'], make_mail(dic), mail_from, [mail_to])
-            send_mail('Your order is ready', mail_to_consumer(dic), mail_from, [dic['email']])            
+            send_mail(request.data['subject'], html_message = make_mail(dic), mail_from, [mail_to])
+            send_mail('Your order is ready', html_message = mail_to_consumer(dic), mail_from, [dic['email']])            
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
