@@ -55,11 +55,12 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     
 def make_mail(dic, num):
     mail =  'You have a new online({0}) order from,\n\n'.format(num);
-    mail += 'Name:      {0} {1}\n'.format(dic['name'], dic['lname']);
-    mail += 'Address:   {0}\n'.format(dic['address'])
-    mail += 'Email:     {0}\n'.format(dic['email'])
-    mail += 'Telephone: {0}\n'.format(dic['number'])
-    mail += 'Payment:   {0}\n\n\n'.format('DEFINE')
+    mail += 'Name:       {0} {1}\n'.format(dic['name'], dic['lname']);
+    mail += 'Address:    {0}\n'.format(dic['address'])
+    mail += 'Email:      {0}\n'.format(dic['email'])
+    mail += 'Telephone:  {0}\n'.format(dic['number'])
+    mail += 'Payment:    {0}\n'.format(dic['payment'])
+    mail += 'Order date: {0}\n\n\n'.format(dic['date'])
     mail += '{:->56}'.format('\n')
     mail += '|Nr.  |    Product name    |    Price    |  Quantity  |\n'
     mail += '{:->56}'.format('\n')
@@ -78,12 +79,12 @@ def make_mail(dic, num):
 
 def mail_to_consumer(dic, num):
     mail = """<table><tr col align="center"><td colspan="3"><b>BETREFFZEILE: MySofra.at - Bestellnummer {0}</b></td><td>""".format(num)
-    mail += """</td><td>  </td></tr><tr><td colspan="3"> Guten Tag {title} {lname},</td></tr><tr><td colspan="3">Herzlichen Dank für Ihre Bestellung bei <a href="https://www.mysofra.at/home"/>mysofra.at</a>. Mit dieser E-Mail ist der Kaufvertrag zustande gekommen. Wir bearbeiten Ihre Bestellung schnellstmöglich. Sie werden die bestellte Ware an dem im Bestellformular  angegebenen Tag erhalten.   </td><td> </td><td>  </td></tr><tr><td bgcolor="#0000ff"colspan="3"><h3><font color="white">Adresse</font></h3></td></tr><tr><td>Emailadresse: {email}</td></tr><tr><td>Telefonnummer: {number}</td></tr><tr><td><b>Lieferadresse</b></td><td><b>Rechnungsadresse</b></td></tr><tr> <td>{title} {name} {lname}<br />{address}<br />Österreich</td><td>{stitle} {sname} {slname}<br />{saddress}<br />Österreich</td></tr><tr><td><b /></td></tr><tr><td><b>Gewählte Zahlart:</b> {payment} </td></tr><tr><td><b />Bemerkungen</td></tr><tr><td bgcolor="#0000ff" colspan="3"><h3><font color="white">Zusammenfassung der Bestellung</font></h3> </td></tr><tr bgcolor="#C0C0C0"><td width="20%"><b>Anzahl</b>	   </td><td width="70%"> <b>Produkt</b> </td><td width="10%"> <b>Preis</b>  </td></tr>""".format(**dic);
+    mail += """</td><td>  </td></tr><tr><td colspan="3"> Guten Tag {title} {lname},</td></tr><tr><td colspan="3">Herzlichen Dank für Ihre Bestellung bei <a href="https://www.mysofra.at/home"/>mysofra.at</a>. Mit dieser E-Mail ist der Kaufvertrag zustande gekommen. Wir bearbeiten Ihre Bestellung schnellstmöglich. Sie werden die bestellte Ware an dem im Bestellformular  angegebenen Tag erhalten.   </td><td> </td><td>  </td></tr><tr><td bgcolor="#0000ff"colspan="3"><h3><font color="white">Adresse</font></h3></td></tr><tr><td>Emailadresse: {email}</td></tr><tr><td>Telefonnummer: {number}</td></tr><tr><td>Lieferdatum: {date}</td></tr><tr><td><b>Lieferadresse</b></td><td><b>Rechnungsadresse</b></td></tr><tr> <td>{title} {name} {lname}<br />{address}<br />Österreich</td><td>{stitle} {sname} {slname}<br />{saddress}<br />Österreich</td></tr><tr><td><b /></td></tr><tr><td><b>Gewählte Zahlart:</b> {payment} </td></tr><tr><td><b />Bemerkungen</td></tr><tr><td bgcolor="#0000ff" colspan="3"><h3><font color="white">Zusammenfassung der Bestellung</font></h3> </td></tr><tr bgcolor="#C0C0C0"><td width="20%"><b>Anzahl</b>	   </td><td width="70%"> <b>Produkt</b> </td><td width="10%"> <b>Preis</b>  </td></tr>""".format(**dic);
     for x in xrange(len(dic['products'])):
     	p = Product.objects.get(pk=dic['products'][x]);
     	mail += """<tr><td>{0}</td><td><b>{1}</b><br />Wird frisch geliefert, soll kühl gelagert werden.</td><td>{2}</td></tr>""".format(dic['quantities'][x], p.name.encode('utf-8'), p.price);
     mail += """<tr><td><b />Total Bestellwert (inkl. MWST)</td><td></td><td><b />EUR {0} </td></tr><tr><td bgcolor="#0000ff" colspan="3"><h3><font color="white">ZUSTELLUNG IST KOSTENLOS</font></h3></td></tr><tr><td colspan="3"> Es gelten unsere Allgemeinen Geschäftsbedingungen. Verbraucher haben ein 14-tägiges Rückgaberecht.</td></tr><td></td><td></td> <br /><tr><td colspan="3">Haben Sie Fragen zu Ihrer Bestellung?<br />Sie erreichen unseren Kundenservice von Mo-Fr von 10-13 Uhr und 14-19 Uhr. <br />Tel.: +43 (1) 890 05 31 - 0<br />Mail: <a href="info@mysofra.at" target="top"> info@mysofra.at </a>  <br />Bitte nennen Sie Ihren Namen, Anschrift, Stadt und Bestell-Nr.<td></td><td></td></tr><tr><td colspan="3">Vielen Dank,<br />Ihr MySofra Serviceteam</td><td></td><td></td></tr></table>""".format(dic['amount']);
-    return mail;
+return mail;
 
 class MailList(APIView):
     """
