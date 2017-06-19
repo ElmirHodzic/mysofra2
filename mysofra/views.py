@@ -84,7 +84,7 @@ def mail_to_consumer(dic, num):
     	p = Product.objects.get(pk=dic['products'][x]);
     	mail += """<tr><td>{0}</td><td><b>{1}</b><br />Wird frisch geliefert, soll kühl gelagert werden.</td><td>{2}</td></tr>""".format(dic['quantities'][x], p.name.encode('utf-8'), p.price);
     mail += """<tr><td><b />Total Bestellwert (inkl. MWST)</td><td></td><td><b />EUR {0} </td></tr><tr><td bgcolor="#0000ff" colspan="3"><h3><font color="white">ZUSTELLUNG IST KOSTENLOS</font></h3></td></tr><tr><td colspan="3"> Es gelten unsere Allgemeinen Geschäftsbedingungen. Verbraucher haben ein 14-tägiges Rückgaberecht.</td></tr><td></td><td></td> <br /><tr><td colspan="3">Haben Sie Fragen zu Ihrer Bestellung?<br />Sie erreichen unseren Kundenservice von Mo-Fr von 10-13 Uhr und 14-19 Uhr. <br />Tel.: +43 (1) 890 05 31 - 0<br />Mail: <a href="info@mysofra.at" target="top"> info@mysofra.at </a>  <br />Bitte nennen Sie Ihren Namen, Anschrift, Stadt und Bestell-Nr.<td></td><td></td></tr><tr><td colspan="3">Vielen Dank,<br />Ihr MySofra Serviceteam</td><td></td><td></td></tr></table>""".format(dic['amount']);
-return mail;
+    return mail;
 
 class MailList(APIView):
     """
