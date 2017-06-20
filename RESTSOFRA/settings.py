@@ -50,10 +50,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'material',
     'material.frontend',
-    'rest_auth',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration'
 ]
 
 SITE_ID = 1
