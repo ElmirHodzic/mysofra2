@@ -30,7 +30,7 @@ SECRET_KEY = '=dw%g1#x%c(vt+5*!&i%ngt(9y#3uo(0^!q&$m=x^0pwi4-zum'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysofra-api.herokuapp.com', 'mysofra.herokuapp.com', 'sofra2.herokuapp.com']
+ALLOWED_HOSTS = ['mysofra-api.herokuapp.com', 'mysofra.herokuapp.com', 'sofra2.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -43,12 +43,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'rest_framework',
+    'rest_framework.authtoken',
     'mysofra.apps.MysofraConfig',
     'corsheaders',
     'material',
     'material.frontend',
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration'
 ]
+
+SITE_ID = 1
+
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -96,7 +110,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] =  dj_database_url.config();
+#DATABASES['default'] =  dj_database_url.config();
 
 
 # Password validation
@@ -153,7 +167,6 @@ EMAIL_PORT = 587
 BRAINTREE_MERCHANT = 'hh9p27zgwxtcvwsh'
 BRAINTREE_PUBLIC_KEY = '93ywc7962chnqfwc'
 BRAINTREE_PRIVATE_KEY = 'ec974035803b158b59380ddd94c9ab8f'
-
 
 Configuration.configure(
     Environment.Sandbox,

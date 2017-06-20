@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
+class Profile(models.Model):
+    title      = models.CharField(max_length=10, blank=True)
+    phone      = models.CharField(max_length=50, blank=True)
+    address    = models.CharField(max_length=100, blank=True)
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name  = models.CharField(max_length=50, blank=True)
+    email      = models.EmailField(max_length=200, unique=True)
+    password   = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return u' %s' % self.email
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from mysofra.models import Product, Mail, Category
+from mysofra.models import Product, Mail, Category, Profile
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +15,8 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name')
+
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('id', 'first_name', 'last_name', 'email', 'title', 'phone', 'address', 'password')

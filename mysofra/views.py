@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from mysofra.models import Product, Mail, Category
-from mysofra.serializers import ProductSerializer, MailSerializer, CategorySerializer
+from mysofra.models import Product, Mail, Category, Profile
+from mysofra.serializers import ProductSerializer, MailSerializer, CategorySerializer, ProfileSerializer
 from rest_framework import generics
 from django.http import Http404
 from rest_framework.views import APIView
@@ -12,6 +12,9 @@ import braintree
 from django.contrib import messages
 import json
 from datetime import datetime
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.http import HttpResponse, JsonResponse
 
 TRANSACTION_SUCCESS_STATUSES = [
     braintree.Transaction.Status.Authorized,
@@ -22,6 +25,14 @@ TRANSACTION_SUCCESS_STATUSES = [
     braintree.Transaction.Status.Settling,
     braintree.Transaction.Status.SubmittedForSettlement
 ]
+
+class ProfileList(generics.ListCreateAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+class ProfileDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -79,7 +90,6 @@ class MailList(APIView):
     List all mails, or create a new mail.
     """
     def get(self, request, format=None):
-        print request.data
         mails = Mail.objects.all()
         serializer = MailSerializer(mails, many=True)
         return Response(serializer.data)
@@ -169,3 +179,20 @@ def create_checkout(request):
         else:
             for x in result.errors.deep_errors: messages.error(request, 'Error: %s: %s' % (x.code, x.message))
             return redirect('/checkouts/new/')
+
+@csrf_exempt
+def logintest(request):
+    if request.method == 'POST':
+        try:
+            data = JSONParser().parse(request)
+            mail = data['email']
+            profile = Profile.objects.get(email=mail);
+            if(data['password'] != profile.password):
+                print(data['password'] + " " + profile.password)
+                return HttpResponse(status=404);
+            serializer = ProfileSerializer(profile);
+            return JsonResponse(serializer.data, safe=False);
+        except Profile.DoesNotExist:
+            return HttpResponse(status=404);
+    else:
+        return HttpResponse(status=404);
