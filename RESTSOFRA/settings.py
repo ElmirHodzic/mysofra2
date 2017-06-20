@@ -30,7 +30,7 @@ SECRET_KEY = '=dw%g1#x%c(vt+5*!&i%ngt(9y#3uo(0^!q&$m=x^0pwi4-zum'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mysofra-api.herokuapp.com', 'mysofra.herokuapp.com', 'sofra2.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['mysofra-api.herokuapp.com', 'mysofra.herokuapp.com', 'mysofra2.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -110,7 +110,7 @@ DATABASES = {
     }
 }
 
-#DATABASES['default'] =  dj_database_url.config();
+DATABASES['default'] =  dj_database_url.config();
 
 
 # Password validation
