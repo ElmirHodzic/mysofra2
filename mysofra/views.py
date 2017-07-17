@@ -55,12 +55,12 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
     
 def make_mail(dic, num):
     mail =  'Neu Bestellung({0}) bei,\n\n'.format(num);
-    mail += 'Name:       {0} {1}\n'.format(dic['name'], dic['lname']);
-    mail += 'Adresse:    {0}\n'.format(dic['address'])
-    mail += 'Emailadresse:      {0}\n'.format(dic['email'])
-    mail += 'Telefonnummer:  {0}\n'.format(dic['number'])
-    mail += 'Zahlart:    {0}\n'.format(dic['payment'])
-    mail += 'Lieferdatum: {0}\n\n\n'.format(dic['date'])
+    mail += 'Name:          {0} {1}\n'.format(dic['name'], dic['lname']);
+    mail += 'Adresse:       {0}\n'.format(dic['address'])
+    mail += 'Emailadresse:  {0}\n'.format(dic['email'])
+    mail += 'Telefonnummer: {0}\n'.format(dic['number'])
+    mail += 'Zahlart:       {0}\n'.format(dic['payment'])
+    mail += 'Lieferdatum:   {0}\n\n\n'.format(dic['date'])
     mail += '{:->78}'.format('\n')
     mail += '|Nr.  |                      Produkt                     |  Preis  | Anzahl |\n'
     mail += '{:->78}'.format('\n')
@@ -72,7 +72,7 @@ def make_mail(dic, num):
     
     mail += '|  TOTAL {:>67}|\n'.format(dic['amount'])
     mail += '{:->78}'.format('\n\n')
-    mail += 'Nachricht: {0}\n'.format(dic['message'])
+    mail += 'Nachricht: \n{0}\n'.format(dic['message'])
     mail += '{:%d.%m.%Y %H:%M}\n'.format(datetime.now())
     mail += 'mysofra.at team'
 
