@@ -61,17 +61,17 @@ def make_mail(dic, num):
     mail += 'Telefonnummer:  {0}\n'.format(dic['number'])
     mail += 'Zahlart:    {0}\n'.format(dic['payment'])
     mail += 'Lieferdatum: {0}\n\n\n'.format(dic['date'])
-    mail += '{:->56}'.format('\n')
-    mail += '|Nr.  |                      Produkt                     |    Preis    |   Anzahl   |\n'
-    mail += '{:->86}'.format('\n')
+    mail += '{:->78}'.format('\n')
+    mail += '|Nr.  |                      Produkt                     |  Preis  | Anzahl |\n'
+    mail += '{:->78}'.format('\n')
 
     for x in xrange(len(dic['products'])):
         p = Product.objects.get(pk=dic['products'][x])
-        mail += u'|{:>5}|{:>50}|    {:>7}  |  {:>8}  |\n'.format(x, p.name, p.price, dic['quantities'][x])
-        mail += '{:->86}'.format('\n')
+        mail += u'|{:>5}|{:>50}|  {:>7}|{:>8}|\n'.format(x, p.name, p.price, dic['quantities'][x])
+        mail += '{:->78}'.format('\n')
     
     mail += '|  TOTAL {:>45}|\n'.format(dic['amount'])
-    mail += '{:->86}'.format('\n\n')
+    mail += '{:->78}'.format('\n\n')
     mail += '{0}\n'.format(dic['message'])
     mail += '{:%d.%m.%Y %H:%M}\n'.format(datetime.now())
     mail += 'mysofra.at team'
