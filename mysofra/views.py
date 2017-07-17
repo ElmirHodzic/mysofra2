@@ -62,7 +62,7 @@ def make_mail(dic, num):
     mail += 'Zahlart:    {0}\n'.format(dic['payment'])
     mail += 'Lieferdatum: {0}\n\n\n'.format(dic['date'])
     mail += '{:->56}'.format('\n')
-    mail += '|Nr.  |                          Produkt                         |    Preis    |   Anzahl   |\n'
+    mail += '|Nr.  |                      Produkt                     |    Preis    |   Anzahl   |\n'
     mail += '{:->86}'.format('\n')
 
     for x in xrange(len(dic['products'])):
