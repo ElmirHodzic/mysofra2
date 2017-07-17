@@ -70,9 +70,9 @@ def make_mail(dic, num):
         mail += u'|{:>5}|{:>50}|  {:>7}|{:>8}|\n'.format(x, p.name, p.price, dic['quantities'][x])
         mail += '{:->78}'.format('\n')
     
-    mail += '|  TOTAL {:>45}|\n'.format(dic['amount'])
+    mail += '|  TOTAL {:>67}|\n'.format(dic['amount'])
     mail += '{:->78}'.format('\n\n')
-    mail += '{0}\n'.format(dic['message'])
+    mail += 'Nachricht: {0}\n'.format(dic['message'])
     mail += '{:%d.%m.%Y %H:%M}\n'.format(datetime.now())
     mail += 'mysofra.at team'
 
