@@ -54,24 +54,25 @@ class ProductDetail(generics.RetrieveUpdateDestroyAPIView):
 
     
 def make_mail(dic, num):
-    mail =  'You have a new online({0}) order from,\n\n'.format(num);
+    mail =  'Neu Bestellung({0}) bei,\n\n'.format(num);
     mail += 'Name:       {0} {1}\n'.format(dic['name'], dic['lname']);
-    mail += 'Address:    {0}\n'.format(dic['address'])
-    mail += 'Email:      {0}\n'.format(dic['email'])
-    mail += 'Telephone:  {0}\n'.format(dic['number'])
-    mail += 'Payment:    {0}\n'.format(dic['payment'])
-    mail += 'Order date: {0}\n\n\n'.format(dic['date'])
+    mail += 'Adresse:    {0}\n'.format(dic['address'])
+    mail += 'Emailadresse:      {0}\n'.format(dic['email'])
+    mail += 'Telefonnummer:  {0}\n'.format(dic['number'])
+    mail += 'Zahlart:    {0}\n'.format(dic['payment'])
+    mail += 'Lieferdatum: {0}\n\n\n'.format(dic['date'])
     mail += '{:->56}'.format('\n')
-    mail += '|Nr.  |    Product name    |    Price    |  Quantity  |\n'
+    mail += '|Nr.  |                          Produkt                         |    Preis    |   Anzahl   |\n'
     mail += '{:->56}'.format('\n')
 
     for x in xrange(len(dic['products'])):
         p = Product.objects.get(pk=dic['products'][x])
-        mail += u'|{:>5}|    {:>12}    |    {:>7}  |  {:>8}  |\n'.format(x, p.name, p.price, dic['quantities'][x])
+        mail += u'|{:>5}|    {:>50}    |    {:>7}  |  {:>8}  |\n'.format(x, p.name, p.price, dic['quantities'][x])
         mail += '{:->56}'.format('\n')
     
-    mail += '| AMOUNT {:>45}|\n'.format(dic['amount'])
-    mail += '{:->56}'.format('\n\n')
+    mail += '|  TOTAL {:>45}|\n'.format(dic['amount'])
+    mail += '{:->94}'.format('\n\n')
+    mail += '{0}\n'.format(dic['message'])
     mail += '{:%d.%m.%Y %H:%M}\n'.format(datetime.now())
     mail += 'mysofra.at team'
 
